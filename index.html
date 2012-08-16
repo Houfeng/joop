@@ -4,11 +4,11 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Joop : 用更容易理解的方式编写面向对象的javascript代码" />
+    <meta name="description" content="joop : 用更容易理解的方式编写面向对象的javascript代码！" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Joop</title>
+    <title>joop</title>
   </head>
 
   <body>
@@ -18,8 +18,8 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/Houfeng/joop">View on GitHub</a>
 
-          <h1 id="project_title">Joop</h1>
-          <h2 id="project_tagline">用更容易理解的方式编写面向对象的javascript代码</h2>
+          <h1 id="project_title">joop</h1>
+          <h2 id="project_tagline">用更容易理解的方式编写面向对象的javascript代码！</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/Houfeng/joop/zipball/master">Download this project as a .zip file</a>
@@ -38,13 +38,27 @@
 <pre><code>用更容易理解的方式编写面向对象的javascript代码
 joop具备面向对象的基本特征:封装，多态，继承。
 </code></pre>
+
+<h3>使用指南</h3>
+
+<h5>创建class</h5>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">Animal</span><span class="o">=</span><span class="nx">$class</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">'animal'</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">Rabbit</span><span class="o">=</span><span class="nx">$class</span><span class="p">({</span>
+    <span class="nx">$base</span><span class="o">:</span> <span class="nx">Animal</span><span class="p">,</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">'aabbit'</span>
+<span class="p">});</span>
+</pre></div>
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Joop maintained by <a href="https://github.com/Houfeng">Houfeng</a></p>
+        <p class="copyright">joop maintained by <a href="https://github.com/Houfeng">Houfeng</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
