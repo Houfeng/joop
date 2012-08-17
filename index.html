@@ -61,7 +61,7 @@
 <div class="highlight"><pre><span class="c1">//最简的方式创建一个类</span>
 <span class="kd">var</span> <span class="nx">Animal</span><span class="o">=</span><span class="nx">$class</span><span class="p">({</span>
     <span class="nx">name</span><span class="o">:</span> <span class="s1">'animal'</span><span class="p">,</span>
-    <span class="c1">//构告函数</span>
+    <span class="c1">//构造函数</span>
     <span class="nx">$init</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">_name</span><span class="p">){</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="o">=</span><span class="nx">_name</span><span class="p">;</span>
     <span class="p">}</span>
@@ -99,6 +99,27 @@
 <span class="nx">$improt</span><span class="p">([</span><span class="s1">'abc.js'</span><span class="p">,</span><span class="s1">'efg.js'</span><span class="p">],</span><span class="kd">function</span><span class="p">(){</span>
     <span class="c1">//TODO: 在此可以使用abc及efg中定义的对象，函数等</span>
 <span class="p">});</span>
+</pre></div>
+
+<h5>定义命名空间$namespace</h5>
+
+<div class="highlight"><pre><span class="nx">$namespace</span><span class="p">(</span><span class="s2">"demo.abc"</span><span class="p">,{</span>
+<span class="c1">//在demo.abc下定义Animal</span>
+<span class="nx">Animal</span><span class="o">:</span><span class="nx">$class</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">'animal'</span><span class="p">,</span>
+    <span class="c1">//构告函数</span>
+    <span class="nx">$init</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">_name</span><span class="p">){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="o">=</span><span class="nx">_name</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+<span class="p">});</span>
+</pre></div>
+
+<h4>使用$using</h4>
+
+<div class="highlight"><pre><span class="nx">$using</span><span class="p">(</span><span class="s2">"demo.abc"</span><span class="p">);</span>
+<span class="c1">//然后就可以直接使用Animal了</span>
+<span class="kd">var</span> <span class="nx">an</span><span class="o">=</span><span class="k">new</span> <span class="nx">Animal</span><span class="p">(</span><span class="s1">'animal'</span><span class="p">);</span>
 </pre></div>
       </section>
     </div>
