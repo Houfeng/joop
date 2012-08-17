@@ -96,10 +96,17 @@
 	"buffers":
 	[
 		{
-			"file": "test/joopTest.js",
 			"settings":
 			{
-				"buffer_size": 2232,
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/joop.js",
+			"settings":
+			{
+				"buffer_size": 16823,
 				"line_ending": "Windows"
 			}
 		}
@@ -107,7 +114,7 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 331.0,
+		"height": 375.0,
 		"selected_items":
 		[
 			[
@@ -163,7 +170,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 492.0
+		"width": 494.0
 	},
 	"console":
 	{
@@ -180,9 +187,9 @@
 	},
 	"file_history":
 	[
+		"/Users/houfeng/Desktop/Dev/项目/joop/test/joopTest.js",
 		"/Users/houfeng/Desktop/Dev/项目/joop/joop.sublime-project",
 		"/Users/houfeng/Desktop/Dev/项目/joop/src/joop.js",
-		"/Users/houfeng/Desktop/Dev/项目/joop/test/joopTest.js",
 		"/Users/houfeng/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/houfeng/Desktop/Dev/项目/joop/test/qunit/helper.js",
 		"/Users/houfeng/Desktop/Dev/项目/joop/test/index.html",
@@ -239,40 +246,58 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "test/joopTest.js",
 					"settings":
 					{
-						"buffer_size": 2232,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								348,
-								348
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"annotation_comments":
-							{
-								"annotations":
-								{
-								},
-								"count": 0.0
-							},
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/joop.js",
+					"settings":
+					{
+						"buffer_size": 16823,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								236,
+								236
+							]
+						],
+						"settings":
+						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 7953.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
