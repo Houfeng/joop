@@ -5,7 +5,7 @@
 		[
 			[
 				"fu",
-				"fun	Function"
+				"function"
 			],
 			[
 				"f",
@@ -172,12 +172,12 @@
 	},
 	"file_history":
 	[
-		"/Users/houfeng/Desktop/Dev/项目/joop/src/joop.js",
 		"/Users/houfeng/Desktop/Dev/项目/joop/test/joopTest.js",
+		"/Users/houfeng/Desktop/Dev/项目/joop/test/index.html",
+		"/Users/houfeng/Desktop/Dev/项目/joop/src/joop.js",
 		"/Users/houfeng/Desktop/Dev/项目/joop/joop.sublime-project",
 		"/Users/houfeng/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/houfeng/Desktop/Dev/项目/joop/test/qunit/helper.js",
-		"/Users/houfeng/Desktop/Dev/项目/joop/test/index.html",
 		"/Users/houfeng/Desktop/快译助手/popup.html",
 		"/Users/houfeng/Desktop/快译助手/styles/default.css",
 		"/Users/houfeng/Desktop/快译助手/manifest.json",
