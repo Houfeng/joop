@@ -427,6 +427,9 @@
         } else if (_namespace) parentObject = _namespace;
         //----
         if (_class) {
+            if($helper.isFunction(_class)){
+                _class=new _class();
+            }
             $helper.each(_class, function(className) {
                 if (!parentObject[className]) parentObject[className] = this;
                 else $helper.throwError("'" + className + "' already exists");
@@ -539,8 +542,6 @@
      */
     owner.$import.createScript = function(_url) {
         var _element = document.createElement('script');
-        _element.async = true;
-        _element.defer = true;
         _element.src = _url;
         _element.type = "text/javascript";
         return _element;
@@ -554,7 +555,7 @@
         var _element = document.createElement('link');
         _element.href = _url;
         _element.type = "text/css";
-        _element.ref = "stylesheet";
+        _element.rel = "stylesheet";
         return _element;
     };
 })(window);
