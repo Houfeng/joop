@@ -107,11 +107,13 @@
          */
         each: function(obj, fn) {
             if (this.isArray(obj)) {
-                for (var i = 0; i < obj.length; i++)
-                fn.call(obj[i], i);
+                for (var i = 0; i < obj.length; i++) {
+                    fn.call(obj[i], i);
+                }
             } else {
-                for (var i in obj)
-                if ($helper.isFunction(fn)) fn.call(obj[i], i);
+                for (var i in obj) {
+                    if ($helper.isFunction(fn)) fn.call(obj[i], i);
+                }
             }
             return obj;
         },
@@ -141,11 +143,15 @@
                 if (me.$base) {
                     for (var name in me.$base) {
                         if (name != "$is" && name != "$base" && name != "$type" && name != "$baseType" && $helper.isFunction(me.$base[name])) {
-                            var func = me.$base[name];
+                            var _func = me.$base[name];
+                            //alert(name);
                             me.$base[name] = function() {
-                                return func.apply(me, arguments);
-                            }
+                                return _func.apply(me, arguments);
+                            };
                         }
+                        //if (!me[name]) { //如果子类没有重写，直接指向父类
+                        //me[name] = me.$base[name];
+                        //}
                     }
                 }
                 //定义$type
@@ -160,11 +166,16 @@
                 }
                 //调用构造
                 var rs = null;
-                if (me.$init && $helper.isFunction(me.$init)) rs = me.$init.apply(me, arguments);
+                if (me.$init && $helper.isFunction(me.$init)) {
+                    rs = me.$init.apply(me, arguments);
+                }
                 //调用扩展构造（可以理解为初始化执行的函数）
                 if (me.$initList) {
-                    for (var i in me.$initList)
-                    if (me.$initList[i] && $helper.isFunction(me.$initList[i])) me.$initList[i].apply(me, arguments);
+                    for (var i in me.$initList) {
+                        if (me.$initList[i] && $helper.isFunction(me.$initList[i])) {
+                            me.$initList[i].apply(me, arguments);
+                        }
+                    }
                 }
                 //返回构造函数据的返回值
                 return rs;
@@ -181,10 +192,16 @@
                     var _body = new fns();
                     fns = _body;
                 }
-                if (!newClass.prototype.$initList) newClass.prototype.$initList = [];
+                if (!newClass.prototype.$initList) {
+                    newClass.prototype.$initList = [];
+                }
                 for (var name in fns) {
-                    if (!internal && name == "$init" && $helper.isFunction(fns[name])) newClass.prototype.$initList.push(fns[name]);
-                    else newClass.prototype[name] = fns[name];
+                    if (!internal && name == "$init" && $helper.isFunction(fns[name])) {
+                        newClass.prototype.$initList.push(fns[name]);
+                    } else {
+                        newClass.prototype[name] = fns[name];
+                        //alert("成员："+name+": "+newClass.prototype[name] );
+                    }
                 }
                 return newClass;
             };
@@ -195,7 +212,7 @@
          * @return {void}           无返回值
          */
         newClass.$extend = function(fns, keepfn) {
-            _extend(fns, false, keepfn);
+            return _extend(fns, false, keepfn);
         };
         /**
          * 扩展类功能，此方法可扩展类的静态方法
@@ -210,7 +227,9 @@
             }
             for (var name in fns) {
                 newClass[name] = fns[name];
-                if (name == "$init" && $helper.isFunction(fns[name])) newClass[name].apply(newClass);
+                if (name == "$init" && $helper.isFunction(fns[name])) {
+                    newClass[name].apply(newClass);
+                }
             }
             return newClass;
         };
@@ -218,19 +237,22 @@
          * 将成员附加到当前类中
          */
         if (params.$base) {
-            var base = params.$base;
-            params.$baseType = base;
-            params.$base = new base();
-            //添加
-            _extend(params.$base, true); //添加父类成员
-            _extend(params, true); //添加当前类成员
+            var _base = params.$base;
+            params.$baseType = _base;
+            params.$base = new _base();
+            //alert('子类');
+            //添加       
             newClass.$static(params.$baseType, true); //添加静态成员
+            newClass = _extend(params.$base, true); //添加父类成员
+            newClass = _extend(params, true); //添加当前类成员
         } else {
-            _extend(params, true);
+            //alert('父类');
+            newClass = _extend(params, true);
         }
         //返回新类型
         return newClass;
     };
+
 
     /**
      * 为对象定义一个事件
@@ -405,6 +427,7 @@
         all: 2
     };
 
+
     /**
      * 定义一个命名空间
      * @param  {String} _namespace 命名空间名称
@@ -427,8 +450,8 @@
         } else if (_namespace) parentObject = _namespace;
         //----
         if (_class) {
-            if($helper.isFunction(_class)){
-                _class=new _class();
+            if ($helper.isFunction(_class)) {
+                _class = new _class();
             }
             $helper.each(_class, function(className) {
                 if (!parentObject[className]) parentObject[className] = this;
