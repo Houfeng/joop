@@ -279,11 +279,11 @@
             me._eventList[name] = [];
             //用以支持系统对象的系统事件
             me.addEventListener = me.addEventListener ||
-            function(name, fn) {
+            function(name, fn, useCapture) {
                 if (me.attachEvent) me.attachEvent("on" + name, fn);
             };
             me.removeEventListener = me.removeEventListener ||
-            function(name, fn) {
+            function(name, fn, useCapture) {
                 if (me.detachEvent) me.detachEvent("on" + name, fn);
             };
             //处理绑定类型
@@ -360,7 +360,7 @@
                             if (event.stopPropagation) event.stopPropagation();
                         }
                     }
-                    me.addEventListener(name, fn.$invoke);
+                    me.addEventListener(name,fn.$invoke,false);
                 }
                 return me;
             };
