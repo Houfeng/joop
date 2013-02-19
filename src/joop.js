@@ -1,5 +1,5 @@
 /**
- * joop ver 1.0
+ * joop ver 0.5
  * @description OOP模块，为JS提供OOP机制，拥有完整的继承，多态，封装等面向对象特性。
  * @author      侯锋
  * @email       admin@xhou.net
@@ -20,7 +20,7 @@
          * @return {String}     结果字符串
          */
         trim: function(str) {
-            if (str && str.trim) return str.trim();
+            if(str && str.trim) return str.trim();
             else return str.replace(/(^[\\s]*)|([\\s]*$)/g, "");
         },
         /**
@@ -70,8 +70,8 @@
          * @return {Boolean}     结果
          */
         isElement: function(obj) {
-            if (window.Element) return obj instanceof Element;
-            else return (obj.tagName && obj.nodeType && obj.nodeName && obj.attributes && obj.ownerDocument);
+            if(window.Element) return obj instanceof Element;
+            else return(obj.tagName && obj.nodeType && obj.nodeName && obj.attributes && obj.ownerDocument);
         },
         /**
          * 验证一个对象是否为HTML Text Element
@@ -95,7 +95,7 @@
          * @return {Boolean}     结果
          */
         isArray: function(obj) {
-            if (!obj) return false;
+            if(!obj) return false;
             var _isArray = ((obj instanceof Array) || (!this.isString(obj) && obj.length && this.isNumber(obj.length)));
             return _isArray;
         },
@@ -106,13 +106,14 @@
          * @return {void}                   无返回值
          */
         each: function(obj, fn) {
-            if (this.isArray(obj)) {
-                for (var i = 0; i < obj.length; i++) {
-                    fn.call(obj[i], i);
+            if(!owner.$helper.isFunction(fn)) return obj;
+            if(this.isArray(obj)) {
+                for(var i = 0; i < obj.length; i++) {
+                    if(fn.call(obj[i], i)) break;
                 }
             } else {
-                for (var i in obj) {
-                    if ($helper.isFunction(fn)) fn.call(obj[i], i);
+                for(var i in obj) {
+                    if(fn.call(obj[i], i)) break;
                 }
             }
             return obj;
@@ -140,9 +141,9 @@
         var newClass = function() {
                 var me = this;
                 //改变父类的作用域，判断父类类型的向个系统函数不能改变作用域
-                if (me.$base) {
-                    for (var name in me.$base) {
-                        if (name != "$is" && name != "$base" && name != "$type" && name != "$baseType" && $helper.isFunction(me.$base[name])) {
+                if(me.$base) {
+                    for(var name in me.$base) {
+                        if(name != "$is" && name != "$base" && name != "$type" && name != "$baseType" && owner.$helper.isFunction(me.$base[name])) {
                             var _func = me.$base[name];
                             //alert(name);
                             me.$base[name] = function() {
@@ -166,13 +167,13 @@
                 }
                 //调用构造
                 var rs = null;
-                if (me.$init && $helper.isFunction(me.$init)) {
+                if(me.$init && owner.$helper.isFunction(me.$init)) {
                     rs = me.$init.apply(me, arguments);
                 }
                 //调用扩展构造（可以理解为初始化执行的函数）
-                if (me.$initList) {
-                    for (var i in me.$initList) {
-                        if (me.$initList[i] && $helper.isFunction(me.$initList[i])) {
+                if(me.$initList) {
+                    for(var i in me.$initList) {
+                        if(me.$initList[i] && owner.$helper.isFunction(me.$initList[i])) {
                             me.$initList[i].apply(me, arguments);
                         }
                     }
@@ -188,15 +189,15 @@
          * @return {void}             无返回值
          */
         var _extend = function(fns, internal, keepfn) { //私有
-                if ($helper.isFunction(fns) && !keepfn) {
+                if(owner.$helper.isFunction(fns) && !keepfn) {
                     var _body = new fns();
                     fns = _body;
                 }
-                if (!newClass.prototype.$initList) {
+                if(!newClass.prototype.$initList) {
                     newClass.prototype.$initList = [];
                 }
-                for (var name in fns) {
-                    if (!internal && name == "$init" && $helper.isFunction(fns[name])) {
+                for(var name in fns) {
+                    if(!internal && name == "$init" && owner.$helper.isFunction(fns[name])) {
                         newClass.prototype.$initList.push(fns[name]);
                     } else {
                         newClass.prototype[name] = fns[name];
@@ -221,13 +222,13 @@
          * @return {void}           无返回值
          */
         newClass.$static = function(fns, keepfn) {
-            if ($helper.isFunction(fns) && !keepfn) {
+            if(owner.$helper.isFunction(fns) && !keepfn) {
                 var _body = new fns();
                 fns = _body;
             }
-            for (var name in fns) {
+            for(var name in fns) {
                 newClass[name] = fns[name];
-                if (name == "$init" && $helper.isFunction(fns[name])) {
+                if(name == "$init" && owner.$helper.isFunction(fns[name])) {
                     newClass[name].apply(newClass);
                 }
             }
@@ -236,7 +237,7 @@
         /**
          * 将成员附加到当前类中
          */
-        if (params.$base) {
+        if(params.$base) {
             var _base = params.$base;
             params.$baseType = _base;
             params.$base = new _base();
@@ -266,40 +267,40 @@
         //默认为当前对象，如果没有在一个自定义对象中使用，this指向的是window
         var me = this;
         //默契第一个参数据事件名，第二个为对象
-        if (src && $helper.isString(name)) me = src;
+        if(src && owner.$helper.isString(name)) me = src;
         //为了支持第一个参数为对象，第二个参为事件名的写法
-        if (name && $helper.isString(src)) {
+        if(name && owner.$helper.isString(src)) {
             me = name;
             name = src;
         }
         //事件存放列表
-        if (!me._eventList) me._eventList = {};
+        if(!me._eventList) me._eventList = {};
         //如果事件不存则添加
-        if (!me._eventList[name]) {
+        if(!me._eventList[name]) {
             me._eventList[name] = [];
             //用以支持系统对象的系统事件
             me.addEventListener = me.addEventListener ||
             function(name, fn, useCapture) {
-                if (me.attachEvent) me.attachEvent("on" + name, fn);
+                if(me.attachEvent) me.attachEvent("on" + name, fn);
             };
             me.removeEventListener = me.removeEventListener ||
             function(name, fn, useCapture) {
-                if (me.detachEvent) me.detachEvent("on" + name, fn);
+                if(me.detachEvent) me.detachEvent("on" + name, fn);
             };
             //处理绑定类型
-            if (bindType == null && bindType != 0) {
-                if ($helper.isArray(me) && !$helper.isElement(me)) bindType = $event.bindType.child;
-                else bindType = $event.bindType.self;
+            if(bindType == null && bindType != 0) {
+                if(owner.$helper.isArray(me) && !owner.$helper.isElement(me)) bindType = owner.$event.bindType.child;
+                else bindType = owner.$event.bindType.self;
             }
             //实现对数组批量支持(支持数组及伪数组),迭代器
             me._each = function(fn, _bindType) {
-                if ($helper.isArray(me) && !$helper.isElement(me) && $event.bindType.self != _bindType && me[0]) {
-                    $helper.each(me, fn);
+                if(owner.$helper.isArray(me) && !owner.$helper.isElement(me) && owner.$event.bindType.self != _bindType && me[0]) {
+                    owner.$helper.each(me, fn);
                 }
                 return me;
             }
             //如果指定的事件已经定义过，则将原有定义转存$+name形式备用
-            if (me[name]) me["$" + name] = me[name];
+            if(me[name]) me["$" + name] = me[name];
             /**
              * 添加一个事件处理或触事件
              * @param  {Function} fn  事件处理函数
@@ -307,7 +308,7 @@
              * @return {void}         无返回值
              */
             me[name] = function(fn, obj) {
-                if (fn && $helper.isFunction(fn)) me[name].bind(fn, obj);
+                if(fn && owner.$helper.isFunction(fn)) me[name].bind(fn, obj);
                 else me[name].tigger.apply(me[name], arguments);
                 return me;
             };
@@ -318,7 +319,7 @@
             me[name].clear = function() {
                 //如果是数组或伪数组
                 me._each(function() {
-                    $event(name, this).clear();
+                    owner.$event(name, this).clear();
                 }, bindType);
                 //
                 me._eventList[name] = [];
@@ -331,8 +332,8 @@
              */
             me[name].has = function(fn) {
                 var list = me._eventList[name];
-                for (var i = 0; i < list.length; i++) {
-                    if (list[i] == fn) return true;
+                for(var i = 0; i < list.length; i++) {
+                    if(list[i] == fn) return true;
                 }
             };
             /**
@@ -344,23 +345,23 @@
             me[name].add = me[name].bind = function(fn, obj) {
                 //如果是数组或伪数组
                 me._each(function() {
-                    $event(name, this).add(fn, obj);
+                    owner.$event(name, this).add(fn, obj);
                 }, bindType);
                 //
-                if (me[name].has(fn) || $event.bindType.child == bindType) return me;
+                if(me[name].has(fn) || owner.$event.bindType.child == bindType) return me;
                 fn._src = obj;
                 me._eventList[name].push(fn);
                 //如果为系统对象支持系统事件
-                if (me.addEventListener && me.removeEventListener) {
+                if(me.addEventListener && me.removeEventListener) {
                     fn.$invoke = function(event) {
                         var rs = fn.apply(me, arguments);
-                        if (rs === false) { //阻止事件冒泡
-                            if (event.cancelBubble) event.cancelBubble = true;
-                            if (event.preventDefault) event.preventDefault();
-                            if (event.stopPropagation) event.stopPropagation();
+                        if(rs === false) { //阻止事件冒泡
+                            if(event.cancelBubble) event.cancelBubble = true;
+                            if(event.preventDefault) event.preventDefault();
+                            if(event.stopPropagation) event.stopPropagation();
                         }
                     }
-                    me.addEventListener(name,fn.$invoke,false);
+                    me.addEventListener(name, fn.$invoke, false);
                 }
                 return me;
             };
@@ -372,17 +373,17 @@
             me[name].remove = me[name].unbind = function(fn) {
                 //如果是数组或伪数组
                 me._each(function() {
-                    $event(name, this).remove(fn);
+                    owner.$event(name, this).remove(fn);
                 }, bindType);
                 //
-                if ($event.bindType.child == bindType) return me;
+                if(owner.$event.bindType.child == bindType) return me;
                 //
-                if (me.addEventListener && me.removeEventListener) {
+                if(me.addEventListener && me.removeEventListener) {
                     me.removeEventListener(name, fn.$invoke);
                 }
                 //
-                for (var i in me._eventList[name]) {
-                    if (me._eventList[name][i] = fn) me._eventList[name][i] = null;
+                for(var i in me._eventList[name]) {
+                    if(me._eventList[name][i] = fn) me._eventList[name][i] = null;
                 }
                 return me;
             };
@@ -395,19 +396,19 @@
                 var args = arguments;
                 //如果是数组或伪数组
                 me._each(function() {
-                    $event(name, this).tigger.apply(this[name], args);
+                    owner.$event(name, this).tigger.apply(this[name], args);
                 }, bindType);
                 //  
-                if (me["$" + name]) {
+                if(me["$" + name]) {
                     me["$" + name].apply(me, args);
                     return;
                 }
                 //
-                for (var i in me._eventList[name]) {
-                    if (me._eventList[name][i] != null) {
+                for(var i in me._eventList[name]) {
+                    if(me._eventList[name][i] != null) {
                         var src = me._eventList[name][i]._src;
-                        if (src == null) src = me;
-                        if (src) me._eventList[name][i].apply(src, args);
+                        if(src == null) src = me;
+                        if(src) me._eventList[name][i].apply(src, args);
                     }
                 }
                 return me;
@@ -427,4 +428,12 @@
         all: 2
     };
 
-})(window);
+})((function() {
+    var owner = (typeof exports === 'undefined') ? window : exports;
+    if(typeof define === 'function' && define.amd && define.amd.joop) {
+        define('joop', [], function() {
+            return owner;
+        });
+    }
+    return owner;
+})());
