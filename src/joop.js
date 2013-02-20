@@ -430,7 +430,7 @@
 
 })((function() {
     var owner = (typeof exports === 'undefined') ? window : exports;
-    if(typeof define === 'function' && define.amd && define.amd.joop) {
+    if(typeof define === 'function' && define.amd) {
         define('joop', [], function() {
             return owner;
         });
