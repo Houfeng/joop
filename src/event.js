@@ -2,24 +2,21 @@
  * 事件模块
  */
 (function(owner) {
-
-    var utils = {
-
-    };
-
+    "use strict";
+    
     /* 为对象定义一个事件
      * @param  {Object} src      要添加事件的对象
      * @param  {String} name     事件名称
      * @param  {$event.bindType} bindType 事件绑定类型
      * @return {Event}           定义的事件
      */
-    owner.$event = function(src, name, bindType) {
+    owner.create = function(src, name, bindType) {
         //默认为当前对象，如果没有在一个自定义对象中使用，this指向的是window
         var me = this;
         //默契第一个参数据事件名，第二个为对象
-        if (src && owner.$helper.isString(name)) me = src;
+        if (src && owner.utils.isString(name)) me = src;
         //为了支持第一个参数为对象，第二个参为事件名的写法
-        if (name && owner.$helper.isString(src)) {
+        if (name && owner.utils.isString(src)) {
             me = name;
             name = src;
         }
@@ -37,13 +34,13 @@
             };
             //处理绑定类型
             if (bindType == null && bindType != 0) {
-                if (owner.$helper.isArray(me) && !owner.$helper.isElement(me)) bindType = owner.$event.bindType.child;
-                else bindType = owner.$event.bindType.self;
+                if (owner.utils.isArray(me) && !owner.utils.isElement(me)) bindType = owner.bindType.child;
+                else bindType = owner.bindType.self;
             }
             //实现对数组批量支持(支持数组及伪数组),迭代器
             me._each = function(fn, _bindType) {
-                if (owner.$helper.isArray(me) && !owner.$helper.isElement(me) && owner.$event.bindType.self != _bindType && me[0]) {
-                    owner.$helper.each(me, fn);
+                if (owner.utils.isArray(me) && !owner.utils.isElement(me) && owner.bindType.self != _bindType && me[0]) {
+                    owner.utils.each(me, fn);
                 }
                 return me;
             }
@@ -56,7 +53,7 @@
              * @return {void}         无返回值
              */
             me[name] = function(fn, obj) {
-                if (fn && owner.$helper.isFunction(fn)) me[name].bind(fn, obj);
+                if (fn && owner.utils.isFunction(fn)) me[name].bind(fn, obj);
                 else me[name].tigger.apply(me[name], arguments);
                 return me;
             };
@@ -67,7 +64,7 @@
             me[name].clear = function() {
                 //如果是数组或伪数组
                 me._each(function() {
-                    owner.$event(name, this).clear();
+                    owner.create(name, this).clear();
                 }, bindType);
                 //
                 me._eventList[name] = [];
@@ -93,10 +90,10 @@
             me[name].add = me[name].bind = function(fn, obj) {
                 //如果是数组或伪数组
                 me._each(function() {
-                    owner.$event(name, this).add(fn, obj);
+                    owner.create(name, this).add(fn, obj);
                 }, bindType);
                 //
-                if (me[name].has(fn) || owner.$event.bindType.child == bindType) return me;
+                if (me[name].has(fn) || owner.bindType.child == bindType) return me;
                 fn._src = obj;
                 me._eventList[name].push(fn);
                 //如果为系统对象支持系统事件
@@ -121,10 +118,10 @@
             me[name].remove = me[name].unbind = function(fn) {
                 //如果是数组或伪数组
                 me._each(function() {
-                    owner.$event(name, this).remove(fn);
+                    owner.create(name, this).remove(fn);
                 }, bindType);
                 //
-                if (owner.$event.bindType.child == bindType) return me;
+                if (owner.bindType.child == bindType) return me;
                 //
                 if (me.addEventListener && me.removeEventListener) {
                     me.removeEventListener(name, fn.$invoke);
@@ -144,7 +141,7 @@
                 var args = arguments;
                 //如果是数组或伪数组
                 me._each(function() {
-                    owner.$event(name, this).tigger.apply(this[name], args);
+                    owner.create(name, this).tigger.apply(this[name], args);
                 }, bindType);
                 //  
                 if (me["$" + name]) {
@@ -170,19 +167,21 @@
      * 事件绑定类型
      * @type {Object}
      */
-    owner.$event.bindType = {
+    owner.bindType = {
         self: 0,
         child: 1,
         all: 2
     };
 
-    //兼容CommonJS
-    if (typeof exports !== 'undefined') exports = owner.$class;
     //兼容AMD模块
     if (typeof define === 'function' && define.amd) {
-        define('$class', [], function() {
-            return owner.$class;
+        define('$event', 'utils', function(utils) {
+            owner.utils = utils;
+            return owner;
         });
+    } else {
+        owner.utils = $utils;
     }
 
-})(window || {});
+})((typeof exports === 'undefined') ? (window.$event = {}) : exports);
+//
