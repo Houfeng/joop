@@ -28,14 +28,14 @@
     /**
      * 定义一个class(类)
      */
-    owner.create = function(_super, _class) {
+    owner.create = function(_base, _class) {
         if (!_class) {
-            _class = _super;
-            _super = null;
+            _class = _base;
+            _base = null;
         };
-        _super = _super || rootClass;
+        _base = _base || rootClass;
         _class = _class || {};
-        var _superInstanse = utils.isFunction(_super) ? new _super() : _super;
+        var _baseInstanse = utils.isFunction(_base) ? new _base() : _base;
         var _classInstanse = utils.isFunction(_class) ? new _class() : _class;
         //创建类型
         var theClass = function() {
@@ -44,9 +44,9 @@
             }
         };
         //处理父子关系，通过prototype将父类成员添加到原型，可以使typeof instanseOf有效;
-        theClass.super = _super;
-        theClass.prototype = _superInstanse;
-        theClass.prototype.super = copyApply(utils.clone(_superInstanse), {}, theClass.prototype); //clone一份父类的成员；;
+        theClass.base = _base;
+        theClass.prototype = _baseInstanse;
+        theClass.prototype.base = copyApply(utils.clone(_baseInstanse), {}, theClass.prototype); //clone一份父类的成员；;
         //定义实例扩展函数
         theClass.extend = function(context) {
             return copyApply(context, this.prototype);
@@ -57,7 +57,7 @@
         };
         //将类成员及静态添加添加到实例
         theClass.extend(_classInstanse);
-        if (utils.isFunction(_super)) theClass.static(_super);
+        if (utils.isFunction(_base)) theClass.static(_base);
         if (utils.isFunction(_class)) theClass.static(_class);
         //返回创建好的类型
         return theClass;

@@ -164,6 +164,35 @@
 	};
 
 	/**
+	 * 定义属性
+	 */
+	owner.defineProperty = function(obj, name, context) {
+		if (!obj || !name || !context) return;
+		if (obj.__defineGetter__ && obj.__defineSetter__) {
+			obj.__defineSetter__(name, context.set);
+			obj.__defineGetter__(name, context.get);
+		} else if (Object.defineProperty) {
+			Object.defineProperty(obj, name, context);
+		} else {
+			obj[name] = context;
+		}
+	};
+
+	/**
+	 * 处理URL
+	 * @param  {String} _url 原始URL
+	 * @return {String}      处理过的URL
+	 */
+	owner.wrapUrl = function(url) {
+		if (url.indexOf('?') > -1) {
+			url += "&__t=" + this.newGuid();
+		} else {
+			url += "?__t=" + this.newGuid();
+		}
+		return url;
+	};
+
+	/**
 	 * 休眼
 	 */
 	owner.sleep = function(s) {
@@ -180,22 +209,7 @@
 		delay = delay || 13;
 		if (this.asyncTimer) clearTimeout(this.asyncTimer);
 		this.asyncTimer = setTimeout(fn, delay);
-		return asyncTimer;
-	};
-
-	/**
-	 * 取一个子对象
-	 */
-	owner.getObject = function(root, path) {
-		if (this.isNull(path)) {
-			path = root;
-			root = (typeof window !== 'undefined') ? window : this;
-		}
-		var nameList = path.split('.');
-		this.each(nameList, function(i, key) {
-			root = (root && key && key != '' && root[key]) ? root[key] : null;
-		});
-		return root;
+		return this.asyncTimer;
 	};
 
 	//----
