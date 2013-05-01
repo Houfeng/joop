@@ -54,7 +54,7 @@
              */
             me[name] = function(fn, obj) {
                 if (fn && owner.utils.isFunction(fn)) me[name].bind(fn, obj);
-                else me[name].tigger.apply(me[name], arguments);
+                else me[name].trigger.apply(me[name], arguments);
                 return me;
             };
             /**
@@ -136,12 +136,12 @@
              * 触发一个事件
              * @return {void} 无返回值
              */
-            me[name].tigger = me[name].fire = function() {
+            me[name].trigger = me[name].fire = function() {
                 /// <summary>触发</summary>
                 var args = arguments;
                 //如果是数组或伪数组
                 me._each(function() {
-                    owner.create(name, this).tigger.apply(this[name], args);
+                    owner.create(name, this).trigger.apply(this[name], args);
                 }, bindType);
                 //  
                 if (me["$" + name]) {

@@ -34,6 +34,10 @@
 	owner.endWith = function(str1, str2) {
 		return str1 && str2 && str1.indexOf(str2) === (str1.length - str2.length);
 	};
+	owner.has = function(obj, name) {
+		if (this.isNull(obj) || this.isNull(name)) return false;
+		return (name in obj) || (obj.hasOwnProperty(name));
+	};
 	/**
 	 * 验证一个对象是否为NULL
 	 * @param  {Object}  obj 要验证的对象
@@ -166,16 +170,34 @@
 	/**
 	 * 定义属性
 	 */
-	owner.defineProperty = function(obj, name, context) {
+	owner.defineProperty = function(obj, name, context, compatible) {
 		if (!obj || !name || !context) return;
-		if (obj.__defineGetter__ && obj.__defineSetter__) {
-			obj.__defineSetter__(name, context.set);
-			obj.__defineGetter__(name, context.get);
-		} else if (Object.defineProperty) {
-			Object.defineProperty(obj, name, context);
-		} else {
-			obj[name] = context;
+		var self = this;
+		context.set = context.set || function() {
+			throw 'do not implement ' + name + ' setter.';
+		};
+		context.get = context.get || function() {
+			throw 'do not implement ' + name + ' getter.';
+		};
+		//
+		if (!compatible) {
+			if (obj.__defineGetter__ && obj.__defineSetter__) {
+				obj.__defineSetter__(name, context.set);
+				obj.__defineGetter__(name, context.get);
+			} else if (Object.defineProperty) {
+				try {
+					Object.defineProperty(obj, name, context);
+				} catch (ex) {}
+			}
 		}
+		//
+		if (!self.has(obj, name)) {
+			obj[name] = function(value) {
+				var method = self.isNull(value) ? 'get' : 'set';
+				return context[method].apply(obj, arguments || []);
+			};
+		}
+		return obj[name];
 	};
 
 	/**
