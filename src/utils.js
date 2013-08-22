@@ -114,6 +114,21 @@
 		var _isArray = ((obj instanceof Array) || (!this.isString(obj) && obj.length && this.isNumber(obj.length)));
 		return _isArray;
 	};
+
+	//转换数组
+	owner.toArray = function(_aar) {
+		try {
+			return Array.prototype.slice.call(_aar);
+		} catch (e) {
+			var arr = [];
+			var lan = _aar.length;
+			for (var i = 0; i < len; i++) {
+				arr[i] = s[i];
+			}
+			return arr;
+		}
+	};
+
 	/**
 	 * 遍历一个对像或数组
 	 * @param  {Object or Array}   obj  要遍历的数组或对象
@@ -155,6 +170,17 @@
 		objClone.toString = obj.toString;
 		objClone.valueOf = obj.valueOf;
 		return objClone;
+	};
+
+	/**
+	 * 拷贝对象
+	 */
+	owner.copy = function(obj1, obj2) {
+		obj2 = obj2 || {};
+		this.each(obj1, function(name) {
+			obj2[name] = obj1[name];
+		})
+		return obj2;
 	};
 
 	/**
@@ -228,10 +254,10 @@
 	 */
 	owner.async = function(fn, delay) {
 		if (!this.isFunction(fn)) return;
-		delay = delay || 13;
-		if (this.asyncTimer) clearTimeout(this.asyncTimer);
-		this.asyncTimer = setTimeout(fn, delay);
-		return this.asyncTimer;
+		delay = delay || 0;
+		if (fn.asyncTimer) clearTimeout(fn.asyncTimer);
+		fn.asyncTimer = setTimeout(fn, delay);
+		return fn.asyncTimer;
 	};
 
 	//----

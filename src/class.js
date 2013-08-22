@@ -51,14 +51,17 @@
         theClass.extend = function(context) {
             return copyApply(context, this.prototype);
         };
-        //定义类扩展函数
-        theClass.static = function(context) {
+        theClass.copy = function(context) {
             return copyApply(context, this);
         };
         //将类成员及静态添加添加到实例
         theClass.extend(_classInstanse);
-        if (utils.isFunction(_base)) theClass.static(_base);
-        if (utils.isFunction(_class)) theClass.static(_class);
+        if (utils.isFunction(_base)) {
+            theClass.copy(_base);
+        };
+        if (utils.isFunction(_class)) {
+            theClass.copy(_class);
+        };
         //返回创建好的类型
         return theClass;
     };

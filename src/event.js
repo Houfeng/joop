@@ -3,7 +3,7 @@
  */
 (function(owner) {
     "use strict";
-    
+
     /* 为对象定义一个事件
      * @param  {Object} src      要添加事件的对象
      * @param  {String} name     事件名称
@@ -127,9 +127,13 @@
                     me.removeEventListener(name, fn.$invoke);
                 }
                 //
-                for (var i in me._eventList[name]) {
-                    if (me._eventList[name][i] = fn) me._eventList[name][i] = null;
-                }
+                var newEventList = [];
+                owner.utils.each(me._eventList[name], function(i, item) {
+                    if (item != fn) {
+                        newEventList.push(item);
+                    }
+                });
+                me._eventList[name] = newEventList;
                 return me;
             };
             /**
