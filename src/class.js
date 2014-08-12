@@ -1,5 +1,5 @@
 /**
- * 类模块
+ * 类模块森
  */
 (function(owner) {
     "use strict";
@@ -16,7 +16,7 @@
                 tag[name] = function() {
                     return src[name].apply(scope || this, arguments);
                 };
-            } else {
+            } else {        
                 tag[name] = src[name];
             }
         });

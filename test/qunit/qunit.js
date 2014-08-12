@@ -234,18 +234,18 @@ Test.prototype = {
 			// `li` initialized at top of scope
 			li = id( this.id );
 			li.className = bad ? "fail" : "pass";
-			li.removeChild( li.firstChild );
-			a = li.firstChild;
-			li.appendChild( b );
-			li.appendChild ( a );
+			li.removeChild( li.firstChild );  
+			a = li.firstChild; 
+			li.appendChild( b );   
+			li.appendChild ( a ); 
 			li.appendChild( ol );
-
-		} else {
+ 
+		} else { 
 			for ( i = 0; i < this.assertions.length; i++ ) {
 				if ( !this.assertions[i].result ) {
-					bad++;
-					config.stats.bad++;
-					config.moduleStats.bad++;
+					bad++; 
+					config.stats.bad ++;
+					config.moduleStats.bad ++;
 				}
 			}
 		}
@@ -282,9 +282,9 @@ Test.prototype = {
 				test.teardown();
 			});
 			synchronize(function() {
-				test.finish();
+				test.finish();  
 			});
-		}
+		} 
 
 		// `bad` initialized at top of scope
 		// defer when previous test run passed, if storage is available
@@ -313,11 +313,11 @@ QUnit = {
 		if ( arguments.length === 2 ) {
 			callback = expected;
 			expected = null;
-		}
-
+		} 
+ 
 		QUnit.test( testName, expected, callback, true );
-	},
-
+	}, 
+ 
 	test: function( testName, expected, callback, async ) {
 		var test,
 			name = "<span class='test-name'>" + escapeInnerText( testName ) + "</span>";
